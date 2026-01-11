@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_property_offer_form" model="ir.ui.view">
+        <field name="name">real_estate.offer.form</field>
+        <field name="model">real_estate.offer</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        
+                        <field name="property_id"/>
+                        
+                        <field name="buyer_name"/>
+                        
+                        <field name="offer_price"/>
+                        
+                        <field name="status"/>
+                        
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_property_offer_tree" model="ir.ui.view">
+        <field name="name">real_estate.offer.tree</field>
+        <field name="model">real_estate.offer</field>
+        <field name="arch" type="xml">
+            <list> <!-- Odoo 18 uses list instead of tree -->
+                
+                <field name="property_id"/>
+                
+                <field name="buyer_name"/>
+                
+                <field name="offer_price"/>
+                
+                <field name="status"/>
+                
+            </list>
+        </field>
+    </record>
+
+    <record id="action_property_offer" model="ir.actions.act_window">
+        <field name="name">Property Offer</field>
+        <field name="res_model">real_estate.offer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <menuitem id="menu_property_offer"
+              name="Property Offer"
+              action="action_property_offer"/>
+</odoo>
