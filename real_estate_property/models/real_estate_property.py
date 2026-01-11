@@ -7,13 +7,17 @@ class RealEstateProperty(models.Model):
     
     name = fields.Char("Property Name", required=True)
     
-    property_type = fields.Selection([
-        ('house', 'House'),
-        ('apartment', 'Apartment'),
-        ('condo', 'Condominium'),
-        ('land', 'Land'),
-        ('commercial', 'Commercial')
-    ], "Property Type", required=True)
+    property_type = fields.Selection(
+        selection=[
+            ('house', 'House'),
+            ('apartment', 'Apartment'),
+            ('condo', 'Condominium'),
+            ('land', 'Land'),
+            ('commercial', 'Commercial')
+        ], 
+        string="Property Type", 
+        required=True
+    )
     
     description = fields.Text("Description")
     
@@ -27,10 +31,15 @@ class RealEstateProperty(models.Model):
     
     area = fields.Float("Area (sq ft)")
     
-    status = fields.Selection([
-        ('draft', 'Draft'),
-        ('available', 'Available'),
-        ('sold', 'Sold'),
-        ('rented', 'Rented'),
-        ('cancelled', 'Cancelled')
-    ], "Status", required=True, default='draft')
+    status = fields.Selection(
+        selection=[
+            ('draft', 'Draft'),
+            ('available', 'Available'),
+            ('sold', 'Sold'),
+            ('rented', 'Rented'),
+            ('cancelled', 'Cancelled')
+        ], 
+        string="Status", 
+        required=True, 
+        default='draft'
+    )
