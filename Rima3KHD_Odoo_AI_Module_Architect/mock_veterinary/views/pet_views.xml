@@ -7,9 +7,11 @@
             <form>
                 <sheet>
                     <group>
+                        
                         <field name="name"/>
+                        
                         <field name="species"/>
-                        <field name="category_id" widget="many2one"/>
+                        
                     </group>
                 </sheet>
             </form>
@@ -21,28 +23,22 @@
         <field name="model">vet.pet</field>
         <field name="arch" type="xml">
             <list> <!-- Odoo 18 uses list instead of tree -->
+                
                 <field name="name"/>
+                
                 <field name="species"/>
-                <field name="category_id"/>
+                
             </list>
         </field>
     </record>
 
-    <!-- Add menu and action for Pet Category -->
-    <record id="action_pet_category" model="ir.actions.act_window">
-        <field name="name">Pet Categories</field>
-        <field name="res_model">vet.pet.category</field>
-        <field name="view_mode">tree,form</field>
-        <field name="help" type="html">
-            <p class="o_view_nocontent_smiling_face">
-                Create your first pet category
-            </p>
-        </field>
+    <record id="action_pet" model="ir.actions.act_window">
+        <field name="name">Pet</field>
+        <field name="res_model">vet.pet</field>
+        <field name="view_mode">list,form</field>
     </record>
 
-    <menuitem id="menu_pet_category" 
-              name="Pet Categories" 
-              parent="menu_vet_main" 
-              action="action_pet_category" 
-              sequence="20"/>
+    <menuitem id="menu_pet"
+              name="Pet"
+              action="action_pet"/>
 </odoo>
