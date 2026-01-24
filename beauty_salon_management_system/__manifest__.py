@@ -1,0 +1,26 @@
+{
+    'name': 'Beauty Salon Management System',
+    'version': '18.0.1.0.0',
+    'category': 'Services',
+    'summary': 'Manage beauty salon appointments, services, clients, and staff',
+    'description': """A comprehensive system for managing a beauty salon, including client records, service catalog, appointment scheduling, staff management, and billing.""",
+    'author': 'Your Company',
+    'website': '',
+    'license': 'LGPL-3',
+    'depends': ["base", "web", "calendar"],
+    'data': [
+        'security/ir.model.access.csv',
+        'views/beauty_salon_menus.xml',
+        'views/beauty_salon_client_views.xml',
+        'views/beauty_salon_service_views.xml',
+        'views/beauty_salon_staff_views.xml',
+        'views/beauty_salon_appointment_views.xml',
+    ],
+    'demo': [
+        'demo/demo_data.xml',
+    ],
+    'assets': {},
+    'installable': True,
+    'application': True,
+    'auto_install': False,
+}

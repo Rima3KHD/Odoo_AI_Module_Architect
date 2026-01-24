@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Main Menu -->
+    <menuitem id="menu_beauty_salon_root" name="Beauty Salon" sequence="10"/>
+    
+    <menuitem id="menu_beauty_salon_main" name="Dashboard" parent="menu_beauty_salon_root" sequence="10"/>
+    
+    <!-- Configuration Menu -->
+    <menuitem id="menu_beauty_salon_configuration" name="Configuration" parent="menu_beauty_salon_root" sequence="100"/>
+    
+    <!-- Reporting Menu -->
+    <menuitem id="menu_beauty_salon_reporting" name="Reporting" parent="menu_beauty_salon_root" sequence="200"/>
+    
+    <!-- Settings Menu (will be added by Odoo automatically) -->
+</odoo>

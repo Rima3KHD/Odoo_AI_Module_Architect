@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form View -->
+    <record id="view_beauty_salon_service_form" model="ir.ui.view">
+        <field name="name">beauty_salon.service.form</field>
+        <field name="model">beauty_salon.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_archive" type="object" string="Archive" states="active" class="oe_highlight" attrs="{'invisible': [('active', '=', False)]}"/>
+                    <button name="action_unarchive" type="object" string="Unarchive" states="archived" class="oe_highlight" attrs="{'invisible': [('active', '=', True)]}"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" string="Service Name"/>
+                        <h1><field name="name"/></h1>
+                        <group>
+                            <field name="category"/>
+                            <field name="price"/>
+                            <field name="duration"/>
+                        </group>
+                    </div>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" nolabel="1"/>
+                        </page>
+                        <page string="Configuration">
+                            <group>
+                                <field name="active"/>
+                                <field name="sequence"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Tree View -->
+    <record id="view_beauty_salon_service_tree" model="ir.ui.view">
+        <field name="name">beauty_salon.service.tree</field>
+        <field name="model">beauty_salon.service</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="category"/>
+                <field name="duration"/>
+                <field name="price"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Search View -->
+    <record id="view_beauty_salon_service_search" model="ir.ui.view">
+        <field name="name">beauty_salon.service.search</field>
+        <field name="model">beauty_salon.service</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="category"/>
+                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <separator/>
+                <group expand="0" string="Group By">
+                    <filter name="group_by_category" string="Category" context="{'group_by': 'category'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action -->
+    <record id="action_beauty_salon_service" model="ir.actions.act_window">
+        <field name="name">Services</field>
+        <field name="res_model">beauty_salon.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_beauty_salon_service_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first service
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Items -->
+    <menuitem id="menu_beauty_salon_services" name="Services" parent="menu_beauty_salon_main" sequence="20"/>
+    <menuitem id="menu_beauty_salon_services_action" name="All Services" parent="menu_beauty_salon_services" action="action_beauty_salon_service" sequence="10"/>
+</odoo>
