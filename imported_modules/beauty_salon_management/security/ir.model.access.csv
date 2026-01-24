@@ -1,9 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-
-access_beauty_salon_client,beauty_salon.client,model_beauty_salon_client,base.group_user,1,1,1,1
-
-access_beauty_salon_service,beauty_salon.service,model_beauty_salon_service,base.group_user,1,1,1,1
-
-access_beauty_salon_staff,beauty_salon.staff,model_beauty_salon_staff,base.group_user,1,1,1,1
-
-access_beauty_salon_appointment,beauty_salon.appointment,model_beauty_salon_appointment,base.group_user,1,1,1,1
