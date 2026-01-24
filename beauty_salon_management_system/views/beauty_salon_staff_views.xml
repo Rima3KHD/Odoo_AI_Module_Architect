@@ -19,19 +19,17 @@
                     <div class="oe_title">
                         <label for="name" string="Staff Name"/>
                         <h1><field name="name"/></h1>
-                        <group>
-                            <field name="specialization"/>
-                            <field name="job_title"/>
-                            <field name="hire_date"/>
-                        </group>
                     </div>
                     <group>
                         <group>
                             <field name="phone"/>
                             <field name="email"/>
+                            <field name="emergency_contact"/>
                         </group>
                         <group>
-                            <field name="active"/>
+                            <field name="specialization"/>
+                            <field name="hire_date"/>
+                            <field name="job_title"/>
                         </group>
                     </group>
                     <notebook>
@@ -51,11 +49,12 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="specialization"/>
-                <field name="job_title"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="active"/>
+                <field name="emergency_contact"/>
+                <field name="specialization"/>
+                <field name="job_title"/>
+                <field name="active" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -68,9 +67,8 @@
             <search>
                 <field name="name"/>
                 <field name="specialization"/>
-                <field name="job_title"/>
-                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
-                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <filter name="active_staff" string="Active" domain="[('active', '=', True)]"/>
+                <filter name="inactive_staff" string="Inactive" domain="[('active', '=', False)]"/>
                 <separator/>
                 <group expand="0" string="Group By">
                     <filter name="group_by_specialization" string="Specialization" context="{'group_by': 'specialization'}"/>
@@ -81,18 +79,13 @@
 
     <!-- Action -->
     <record id="action_beauty_salon_staff" model="ir.actions.act_window">
-        <field name="name">Staff</field>
+        <field name="name">Salon Staff</field>
         <field name="res_model">beauty_salon.staff</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_beauty_salon_staff_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your first staff member
+                Add your first staff member!
             </p>
         </field>
     </record>
-
-    <!-- Menu Items -->
-    <menuitem id="menu_beauty_salon_staff" name="Staff" parent="menu_beauty_salon_main" sequence="30"/>
-    <menuitem id="menu_beauty_salon_staff_action" name="All Staff" parent="menu_beauty_salon_staff" action="action_beauty_salon_staff" sequence="10"/>
 </odoo>

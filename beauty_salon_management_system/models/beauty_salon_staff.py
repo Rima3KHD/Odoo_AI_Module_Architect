@@ -7,6 +7,7 @@ class BeautySalonStaff(models.Model):
     name = fields.Char("Staff Name", required=True)
     phone = fields.Char("Phone Number")
     email = fields.Char("Email Address")
+    emergency_contact = fields.Char("Emergency Contact")
     specialization = fields.Selection([
         ('hair_stylist', 'Hair Stylist'),
         ('nail_tech', 'Nail Technician'),
@@ -23,18 +24,4 @@ class BeautySalonStaff(models.Model):
     # Computed fields
     appointment_count = fields.Integer("Appointments", compute='_compute_appointment_count', store=False)
     
-    @api.depends()
-    def _compute_appointment_count(self):
-        for staff in self:
-            staff.appointment_count = self.env['beauty_salon.appointment'].search_count([('staff_id', '=', staff.id)])
     
-    def action_open_appointments(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Staff Appointments',
-            'res_model': 'beauty_salon.appointment',
-            'view_mode': 'tree,form,calendar',
-            'domain': [('staff_id', '=', self.id)],
-            'context': {'default_staff_id': self.id},
-        }
