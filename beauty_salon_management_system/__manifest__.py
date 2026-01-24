@@ -7,7 +7,7 @@
     'author': 'Your Company',
     'website': '',
     'license': 'LGPL-3',
-    'depends': ["base", "web", "calendar"],
+    'depends': ["base", "web", "calendar", "account"],
     'data': [
         'security/ir.model.access.csv',
         'views/beauty_salon_menus.xml',
@@ -16,6 +16,7 @@
         'views/beauty_salon_service_views.xml',
         'views/beauty_salon_staff_views.xml',
         'views/beauty_salon_appointment_views.xml',
+        'views/account_move_views.xml',
     ],
     'demo': [
         'demo/demo_data.xml',
