@@ -12,40 +12,36 @@
                     <button name="action_complete" type="object" string="Complete" states="in_progress" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel" states="draft,confirmed" class="btn-danger"/>
                     <button name="action_reset_to_draft" type="object" string="Reset to Draft" states="cancelled" class="btn-secondary"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed,cancelled" clickable="1"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" invisible="1"/>
-                            Appointment
+                            <field name="name" readonly="1" class="oe_inline"/>
                         </h1>
                     </div>
                     <group>
                         <group>
-                            <field name="client_id" options="{'no_create': True, 'no_open': True}"/>
-                            <field name="service_id" options="{'no_create': True}"/>
-                            <field name="staff_id" domain="[('active', '=', True)]" options="{'no_create': True}"/>
+                            <field name="client_id" required="1"/>
+                            <field name="service_id" required="1"/>
+                            <field name="staff_id" required="1"/>
                         </group>
                         <group>
-                            <field name="appointment_date"/>
-                            <field name="duration"/>
+                            <field name="appointment_date" required="1"/>
+                            <field name="duration" required="1"/>
                             <field name="end_date" readonly="1"/>
                         </group>
                     </group>
-                    <notebook>
-                        <page string="Notes">
-                            <field name="notes" nolabel="1"/>
-                        </page>
-                        <page string="Additional Information">
-                            <group>
-                                <field name="create_date" readonly="1"/>
-                                <field name="write_date" readonly="1"/>
-                                <field name="create_uid" readonly="1"/>
-                                <field name="write_uid" readonly="1"/>
-                            </group>
-                        </page>
-                    </notebook>
+                    <group>
+                        <group>
+                            <field name="state" readonly="1"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible': [('state', '!=', 'cancelled')]}">
+                        <group>
+                            <field name="reason_for_cancel" placeholder="Enter reason for cancellation..." nolabel="1" attrs="{'readonly': [('state', '!=', 'cancelled')]}"/>
+                        </group>
+                    </group>
                 </sheet>
             </form>
         </field>
@@ -56,27 +52,15 @@
         <field name="name">beauty_salon.appointment.tree</field>
         <field name="model">beauty_salon.appointment</field>
         <field name="arch" type="xml">
-            <tree decoration-success="state == 'completed'" decoration-warning="state == 'in_progress'" decoration-danger="state == 'cancelled'" decoration-info="state == 'confirmed'">
+            <tree>
+                <field name="name"/>
                 <field name="client_id"/>
                 <field name="service_id"/>
                 <field name="staff_id"/>
                 <field name="appointment_date"/>
-                <field name="duration"/>
                 <field name="state"/>
+                <field name="reason_for_cancel" attrs="{'invisible': [('state', '!=', 'cancelled')]}"/>
             </tree>
-        </field>
-    </record>
-
-    <!-- Calendar View -->
-    <record id="view_beauty_salon_appointment_calendar" model="ir.ui.view">
-        <field name="name">beauty_salon.appointment.calendar</field>
-        <field name="model">beauty_salon.appointment</field>
-        <field name="arch" type="xml">
-            <calendar date_start="appointment_date" date_stop="end_date" color="staff_id" string="Appointments" mode="week">
-                <field name="client_id"/>
-                <field name="service_id"/>
-                <field name="state"/>
-            </calendar>
         </field>
     </record>
 
@@ -90,17 +74,11 @@
                 <field name="service_id"/>
                 <field name="staff_id"/>
                 <field name="state"/>
-                <filter name="today" string="Today" domain="[('appointment_date', '>=', context_today().strftime('%Y-%m-%d 00:00:00')), ('appointment_date', '&lt;=', context_today().strftime('%Y-%m-%d 23:59:59'))]"/>
-                <filter name="this_week" string="This Week" domain="[('appointment_date', '>=', context_today().strftime('%Y-%m-%d 00:00:00')), ('appointment_date', '&lt;=', (context_today() + datetime.timedelta(days=7)).strftime('%Y-%m-%d 23:59:59'))]"/>
                 <filter name="draft" string="Draft" domain="[('state', '=', 'draft')]"/>
                 <filter name="confirmed" string="Confirmed" domain="[('state', '=', 'confirmed')]"/>
-                <separator/>
-                <group expand="0" string="Group By">
-                    <filter name="group_by_client" string="Client" context="{'group_by': 'client_id'}"/>
-                    <filter name="group_by_staff" string="Staff" context="{'group_by': 'staff_id'}"/>
-                    <filter name="group_by_service" string="Service" context="{'group_by': 'service_id'}"/>
-                    <filter name="group_by_state" string="State" context="{'group_by': 'state'}"/>
-                </group>
+                <filter name="in_progress" string="In Progress" domain="[('state', '=', 'in_progress')]"/>
+                <filter name="cancelled" string="Cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <filter name="completed" string="Completed" domain="[('state', '=', 'completed')]"/>
             </search>
         </field>
     </record>
@@ -109,17 +87,14 @@
     <record id="action_beauty_salon_appointment" model="ir.actions.act_window">
         <field name="name">Appointments</field>
         <field name="res_model">beauty_salon.appointment</field>
-        <field name="view_mode">calendar,tree,form</field>
-        <field name="search_view_id" ref="view_beauty_salon_appointment_search"/>
+        <field name="view_mode">tree,form</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Schedule your first appointment
+                No appointments yet. Create your first appointment!
             </p>
         </field>
-        <field name="context">{'search_default_today': 1}</field>
     </record>
 
-    <!-- Menu Items -->
-    <menuitem id="menu_beauty_salon_appointments" name="Appointments" parent="menu_beauty_salon_main" sequence="40"/>
-    <menuitem id="menu_beauty_salon_appointments_action" name="All Appointments" parent="menu_beauty_salon_appointments" action="action_beauty_salon_appointment" sequence="10"/>
+    <!-- Menu Item (already defined in beauty_salon_menus.xml) -->
+
 </odoo>

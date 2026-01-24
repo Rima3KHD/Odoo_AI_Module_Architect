@@ -18,20 +18,13 @@ class BeautySalonAppointment(models.Model):
         ('draft', 'Draft'),
         ('confirmed', 'Confirmed'),
         ('in_progress', 'In Progress'),
-        ('completed', 'Completed'),
-        ('cancelled', 'Cancelled')
-    ], string='Status', default='draft', required=True)
+        ('cancelled', 'Cancelled'),
+        ('completed', 'Completed')
+    ], string='Status', default='draft', readonly=True, tracking=True)
     
-    notes = fields.Text(string='Appointment Notes')
-    
-    @api.depends('client_id', 'service_id', 'appointment_date')
-    def _compute_name(self):
-        for appointment in self:
-            if appointment.client_id and appointment.service_id and appointment.appointment_date:
-                date_str = appointment.appointment_date.strftime('%Y-%m-%d')
-                appointment.name = f"{appointment.client_id.name} - {appointment.service_id.name} - {date_str}"
-            else:
-                appointment.name = "New Appointment"
+    reason_for_cancel = fields.Text(string='Reason for Cancellation',
+        help='Reason provided when appointment is cancelled.',
+        readonly=True, states={'cancelled': [('readonly', False)]})
     
     @api.depends('appointment_date', 'duration')
     def _compute_end_date(self):
@@ -41,17 +34,11 @@ class BeautySalonAppointment(models.Model):
             else:
                 appointment.end_date = False
     
-    def action_confirm(self):
-        self.write({'state': 'confirmed'})
-    
-    def action_start(self):
-        self.write({'state': 'in_progress'})
-    
-    def action_complete(self):
-        self.write({'state': 'completed'})
-    
-    def action_cancel(self):
-        self.write({'state': 'cancelled'})
-    
-    def action_reset_to_draft(self):
-        self.write({'state': 'draft'})
+    @api.depends('client_id', 'appointment_date')
+    def _compute_name(self):
+        for appointment in self:
+            if appointment.client_id and appointment.appointment_date:
+                date_str = appointment.appointment_date.strftime('%Y%m%d')
+                appointment.name = f"APPT-{date_str}-{appointment.client_id.name}"
+            else:
+                appointment.name = "New Appointment"
