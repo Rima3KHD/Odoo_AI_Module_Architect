@@ -6,9 +6,8 @@ class BeautySalonClient(models.Model):
     _description = 'Client or customer of the beauty salon'
     
     name = fields.Char("Client Name", required=True)
-    phone = fields.Char("Phone Number")
-    email = fields.Char("Email Address")
-    address = fields.Text("Full Address")
+    partner_id = fields.Many2one('res.partner', string='Contact', required=True,
+                                 help="Link to the contact in Odoo's partner system")
     date_of_birth = fields.Date("Date of Birth")
     gender = fields.Selection([
         ('male', 'Male'),
@@ -25,22 +24,54 @@ class BeautySalonClient(models.Model):
     
     # Membership status
     membership_status = fields.Selection([
-        ('regular', 'Regular'),
-        ('premium', 'Premium'),
-        ('vip', 'VIP'),
-    ], string="Membership Status", default='regular')
+        ('none', 'No Membership'),
+        ('basic', 'Basic Member'),
+        ('premium', 'Premium Member'),
+        ('vip', 'VIP Member')
+    ], string="Membership Status", default='none')
     
-    # Computed fields
-    appointment_count = fields.Integer("Appointments", compute='_compute_appointment_count', store=False)
+    # Related fields from partner
+    phone = fields.Char(related='partner_id.phone', string="Phone Number", readonly=True)
+    email = fields.Char(related='partner_id.email', string="Email Address", readonly=True)
+    address = fields.Text(related='partner_id.contact_address_complete', string="Full Address", readonly=True)
     
+    # Computed fields for display
+    @api.depends('partner_id')
+    def _compute_contact_info(self):
+        for client in self:
+            client.phone = client.partner_id.phone
+            client.email = client.partner_id.email
+            client.address = client.partner_id.contact_address_complete
+    
+    # Default methods
     def _default_salon_id(self):
-        # Default to the first active salon if available
-        salon = self.env['beauty.salon'].search([('active', '=', True)], limit=1)
+        # Return the first salon if exists, otherwise False
+        salon = self.env['beauty.salon'].search([], limit=1)
         return salon.id if salon else False
     
-    @api.depends()
-    def _compute_appointment_count(self):
+    # Constraints
+    @api.constrains('date_of_birth')
+    def _check_date_of_birth(self):
         for client in self:
-            client.appointment_count = self.env['beauty.salon.appointment'].search_count([
-                ('client_id', '=', client.id)
-            ])
+            if client.date_of_birth and client.date_of_birth > fields.Date.today():
+                raise ValidationError("Date of birth cannot be in the future!")
+    
+    # Override create to ensure partner exists
+    @api.model
+    def create(self, vals):
+        # If partner_id is not provided, create a new partner
+        if 'partner_id' not in vals:
+            partner_vals = {
+                'name': vals.get('name', 'New Client'),
+                'company_type': 'person',
+            }
+            partner = self.env['res.partner'].create(partner_vals)
+            vals['partner_id'] = partner.id
+        return super(BeautySalonClient, self).create(vals)
+    
+    def write(self, vals):
+        # Update partner name if client name changes
+        if 'name' in vals and 'partner_id' not in vals:
+            for client in self:
+                client.partner_id.write({'name': vals['name']})
+        return super(BeautySalonClient, self).write(vals)
