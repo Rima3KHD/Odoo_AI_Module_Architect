@@ -7,3 +7,5 @@ access_beauty_salon_staff_user,beauty_salon.staff.user,model_beauty_salon_staff,
 access_beauty_salon_staff_manager,beauty_salon.staff.manager,model_beauty_salon_staff,base.group_manager,1,1,1,1
 access_beauty_salon_appointment_user,beauty_salon.appointment.user,model_beauty_salon_appointment,base.group_user,1,1,1,0
 access_beauty_salon_appointment_manager,beauty_salon.appointment.manager,model_beauty_salon_appointment,base.group_manager,1,1,1,1
+access_beauty_salon_user,beauty_salon.user,model_beauty_salon,base.group_user,1,0,0,0
+access_beauty_salon_manager,beauty_salon.manager,model_beauty_salon,base.group_manager,1,1,1,1

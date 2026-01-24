@@ -2,7 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
 class BeautySalonClient(models.Model):
-    _name = 'beauty_salon.client'
+    _name = 'beauty.salon.client'
     _description = 'Client or customer of the beauty salon'
     
     name = fields.Char("Client Name", required=True)
@@ -19,37 +19,28 @@ class BeautySalonClient(models.Model):
     active = fields.Boolean("Active", default=True)
     create_date = fields.Datetime("Created On", readonly=True)
     
+    # Salon relationship
+    salon_id = fields.Many2one('beauty.salon', string='Salon', required=True, 
+                               default=lambda self: self._default_salon_id())
+    
+    # Membership status
+    membership_status = fields.Selection([
+        ('regular', 'Regular'),
+        ('premium', 'Premium'),
+        ('vip', 'VIP'),
+    ], string="Membership Status", default='regular')
+    
     # Computed fields
     appointment_count = fields.Integer("Appointments", compute='_compute_appointment_count', store=False)
+    
+    def _default_salon_id(self):
+        # Default to the first active salon if available
+        salon = self.env['beauty.salon'].search([('active', '=', True)], limit=1)
+        return salon.id if salon else False
     
     @api.depends()
     def _compute_appointment_count(self):
         for client in self:
-            client.appointment_count = self.env['beauty_salon.appointment'].search_count([('client_id', '=', client.id)])
-    
-    def action_open_appointments(self):
-        self.ensure_one()
-        return {
-            'type': 'ir.actions.act_window',
-            'name': 'Client Appointments',
-            'res_model': 'beauty_salon.appointment',
-            'view_mode': 'tree,form,calendar',
-            'domain': [('client_id', '=', self.id)],
-            'context': {'default_client_id': self.id},
-        }
-    
-    @api.constrains('email')
-    def _check_email_unique(self):
-        for client in self:
-            if client.email:
-                existing = self.search([('email', '=', client.email), ('id', '!=', client.id)])
-                if existing:
-                    raise ValidationError("Email address must be unique per client.")
-    
-    @api.constrains('phone')
-    def _check_phone_unique(self):
-        for client in self:
-            if client.phone:
-                existing = self.search([('phone', '=', client.phone), ('id', '!=', client.id)])
-                if existing:
-                    raise ValidationError("Phone number must be unique per client.")
+            client.appointment_count = self.env['beauty.salon.appointment'].search_count([
+                ('client_id', '=', client.id)
+            ])

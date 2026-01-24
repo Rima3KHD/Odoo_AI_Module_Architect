@@ -3,10 +3,23 @@
     <!-- Main Menu -->
     <menuitem id="menu_beauty_salon_root" name="Beauty Salon" sequence="10"/>
     
-    <menuitem id="menu_beauty_salon_main" name="Dashboard" parent="menu_beauty_salon_root" sequence="10"/>
+    <!-- Salon Management Menu -->
+    <menuitem id="menu_beauty_salon_management" name="Salon Management" parent="menu_beauty_salon_root" sequence="5"/>
+    
+    <!-- Salon Submenus -->
+    <menuitem id="menu_beauty_salons" name="Salons" parent="menu_beauty_salon_management" sequence="10" action="action_beauty_salon"/>
+    
+    <menuitem id="menu_beauty_salon_clients" name="Clients" parent="menu_beauty_salon_management" sequence="20" action="action_beauty_salon_client"/>
+    
+    <menuitem id="menu_beauty_salon_appointments" name="Appointments" parent="menu_beauty_salon_management" sequence="30" action="action_beauty_salon_appointment"/>
     
     <!-- Configuration Menu -->
     <menuitem id="menu_beauty_salon_configuration" name="Configuration" parent="menu_beauty_salon_root" sequence="100"/>
+    
+    <!-- Configuration Submenus -->
+    <menuitem id="menu_beauty_salon_services" name="Services" parent="menu_beauty_salon_configuration" sequence="10" action="action_beauty_salon_service"/>
+    
+    <menuitem id="menu_beauty_salon_staff" name="Staff" parent="menu_beauty_salon_configuration" sequence="20" action="action_beauty_salon_staff"/>
     
     <!-- Reporting Menu -->
     <menuitem id="menu_beauty_salon_reporting" name="Reporting" parent="menu_beauty_salon_root" sequence="200"/>

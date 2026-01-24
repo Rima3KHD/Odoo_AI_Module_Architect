@@ -2,35 +2,37 @@
 <odoo>
     <!-- Form View -->
     <record id="view_beauty_salon_client_form" model="ir.ui.view">
-        <field name="name">beauty_salon.client.form</field>
-        <field name="model">beauty_salon.client</field>
+        <field name="name">beauty.salon.client.form</field>
+        <field name="model">beauty.salon.client</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Client">
                 <header>
                     <button name="action_archive" type="object" string="Archive" states="active" class="oe_highlight" attrs="{'invisible': [('active', '=', False)]}"/>
                     <button name="action_unarchive" type="object" string="Unarchive" states="archived" class="oe_highlight" attrs="{'invisible': [('active', '=', True)]}"/>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,in_progress,completed,cancelled"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_open_appointments" type="object" class="oe_stat_button" icon="fa-calendar">
-                            <field name="appointment_count" widget="statinfo" string="Appointments"/>
+                            <div class="o_stat_info">
+                                <field name="appointment_count" widget="statinfo" string="Appointments"/>
+                            </div>
                         </button>
                     </div>
                     <div class="oe_title">
-                        <label for="name" string="Client Name"/>
-                        <h1><field name="name"/></h1>
+                        <h1>
+                            <field name="name" placeholder="Client Name"/>
+                        </h1>
                     </div>
                     <group>
                         <group>
                             <field name="phone"/>
                             <field name="email"/>
-                            <field name="gender"/>
-                            <field name="date_of_birth"/>
+                            <field name="membership_status"/>
                         </group>
                         <group>
-                            <field name="active" invisible="1"/>
-                            <field name="create_date" readonly="1"/>
+                            <field name="salon_id" widget="many2one" options="{'no_create': True}"/>
+                            <field name="date_of_birth"/>
+                            <field name="gender"/>
                         </group>
                     </group>
                     <notebook>
@@ -40,61 +42,76 @@
                         <page string="Notes">
                             <field name="notes" nolabel="1"/>
                         </page>
+                        <page string="Appointments" attrs="{'invisible': [('id', '=', False)]}">
+                            <field name="appointment_count" invisible="1"/>
+                            <field name="appointment_ids" nolabel="1" context="{'default_client_id': active_id, 'default_salon_id': salon_id}">
+                                <tree>
+                                    <field name="salon_id"/>
+                                    <field name="service_id"/>
+                                    <field name="staff_id"/>
+                                    <field name="appointment_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
             </form>
         </field>
     </record>
-
+    
     <!-- Tree View -->
     <record id="view_beauty_salon_client_tree" model="ir.ui.view">
-        <field name="name">beauty_salon.client.tree</field>
-        <field name="model">beauty_salon.client</field>
+        <field name="name">beauty.salon.client.tree</field>
+        <field name="model">beauty.salon.client</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="Clients" decoration-danger="active == False">
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <field name="gender"/>
+                <field name="salon_id"/>
+                <field name="membership_status"/>
+                <field name="appointment_count"/>
                 <field name="active" invisible="1"/>
-                <field name="create_date"/>
             </tree>
         </field>
     </record>
-
+    
     <!-- Search View -->
     <record id="view_beauty_salon_client_search" model="ir.ui.view">
-        <field name="name">beauty_salon.client.search</field>
-        <field name="model">beauty_salon.client</field>
+        <field name="name">beauty.salon.client.search</field>
+        <field name="model">beauty.salon.client</field>
         <field name="arch" type="xml">
-            <search>
+            <search string="Search Clients">
                 <field name="name"/>
                 <field name="phone"/>
                 <field name="email"/>
-                <filter name="active" string="Active" domain="[('active', '=', True)]"/>
-                <filter name="inactive" string="Inactive" domain="[('active', '=', False)]"/>
+                <field name="salon_id"/>
+                <filter string="Active" name="active" domain="[[('active', '=', True)]]"/>
+                <filter string="Premium Members" name="premium" domain="[[('membership_status', '=', 'premium')]]"/>
+                <filter string="VIP Members" name="vip" domain="[[('membership_status', '=', 'vip')]]"/>
                 <separator/>
                 <group expand="0" string="Group By">
-                    <filter name="group_by_gender" string="Gender" context="{'group_by': 'gender'}"/>
+                    <filter string="Salon" name="group_salon" context="{'group_by': 'salon_id'}"/>
+                    <filter string="Membership Status" name="group_membership" context="{'group_by': 'membership_status'}"/>
                 </group>
             </search>
         </field>
     </record>
-
-    <!-- Action -->
+    
+    <!-- Client Action -->
     <record id="action_beauty_salon_client" model="ir.actions.act_window">
         <field name="name">Clients</field>
-        <field name="res_model">beauty_salon.client</field>
+        <field name="res_model">beauty.salon.client</field>
         <field name="view_mode">tree,form</field>
-        <field name="search_view_id" ref="view_beauty_salon_client_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Create your first client
+                Manage your beauty salon clients here.
+            </p>
+            <p>
+                Create client records, track their appointments, and manage membership status.
             </p>
         </field>
     </record>
-
-    <!-- Menu Items -->
-    <menuitem id="menu_beauty_salon_clients" name="Clients" parent="menu_beauty_salon_main" sequence="10"/>
-    <menuitem id="menu_beauty_salon_clients_action" name="All Clients" parent="menu_beauty_salon_clients" action="action_beauty_salon_client" sequence="10"/>
+    
 </odoo>

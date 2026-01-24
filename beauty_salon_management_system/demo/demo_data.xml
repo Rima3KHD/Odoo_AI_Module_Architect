@@ -1,141 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Demo Salons -->
+    <record id="demo_salon_1" model="beauty.salon">
+        <field name="name">Glamour Beauty Salon</field>
+        <field name="code">SALON-001</field>
+        <field name="phone">+1 (555) 111-2222</field>
+        <field name="email">info@glamourbeauty.com</field>
+        <field name="website">www.glamourbeauty.com</field>
+        <field name="street">123 Fashion Avenue</field>
+        <field name="city">New York</field>
+        <field name="zip">10001</field>
+        <field name="opening_time">9.0</field>
+        <field name="closing_time">20.0</field>
+        <field name="capacity">10</field>
+        <field name="status">open</field>
+        <field name="description">Premium beauty salon in downtown New York offering a wide range of services.</field>
+    </record>
+
+    <record id="demo_salon_2" model="beauty.salon">
+        <field name="name">Serenity Spa & Salon</field>
+        <field name="code">SALON-002</field>
+        <field name="phone">+1 (555) 333-4444</field>
+        <field name="email">contact@serenityspa.com</field>
+        <field name="website">www.serenityspa.com</field>
+        <field name="street">456 Relaxation Road</field>
+        <field name="city">Los Angeles</field>
+        <field name="zip">90001</field>
+        <field name="opening_time">8.0</field>
+        <field name="closing_time">19.0</field>
+        <field name="capacity">8</field>
+        <field name="status">open</field>
+        <field name="description">Luxury spa and salon specializing in relaxation and wellness treatments.</field>
+    </record>
+
+    <record id="demo_salon_3" model="beauty.salon">
+        <field name="name">Urban Style Bar</field>
+        <field name="code">SALON-003</field>
+        <field name="phone">+1 (555) 555-6666</field>
+        <field name="email">hello@urbanstyle.com</field>
+        <field name="website">www.urbanstyle.com</field>
+        <field name="street">789 Trendy Street</field>
+        <field name="city">Chicago</field>
+        <field name="zip">60601</field>
+        <field name="opening_time">10.0</field>
+        <field name="closing_time">21.0</field>
+        <field name="capacity">12</field>
+        <field name="status">open</field>
+        <field name="description">Modern salon focusing on contemporary hairstyles and nail art.</field>
+    </record>
+
+    <!-- Demo Staff -->
+    <record id="demo_staff_1" model="beauty.salon.staff">
+        <field name="name">Sarah Miller</field>
+        <field name="phone">+1 (555) 777-8888</field>
+        <field name="email">sarah.miller@example.com</field>
+        <field name="emergency_contact">+1 (555) 999-0000</field>
+        <field name="specialization">hair_stylist</field>
+        <field name="job_title">Senior Hair Stylist</field>
+        <field name="hire_date">2020-03-15</field>
+        <field name="is_manager">True</field>
+        <field name="notes">Expert in color treatments and hair extensions</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_1')])]"/>
+    </record>
+
+    <record id="demo_staff_2" model="beauty.salon.staff">
+        <field name="name">David Wilson</field>
+        <field name="phone">+1 (555) 222-3333</field>
+        <field name="email">david.wilson@example.com</field>
+        <field name="emergency_contact">+1 (555) 444-5555</field>
+        <field name="specialization">nail_tech</field>
+        <field name="job_title">Nail Technician</field>
+        <field name="hire_date">2021-06-10</field>
+        <field name="is_manager">False</field>
+        <field name="notes">Specializes in gel nails and nail art</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_1'), ref('demo_salon_2')])]"/>
+    </record>
+
+    <record id="demo_staff_3" model="beauty.salon.staff">
+        <field name="name">Jessica Brown</field>
+        <field name="phone">+1 (555) 666-7777</field>
+        <field name="email">jessica.brown@example.com</field>
+        <field name="emergency_contact">+1 (555) 888-9999</field>
+        <field name="specialization">esthetician</field>
+        <field name="job_title">Esthetician</field>
+        <field name="hire_date">2022-01-20</field>
+        <field name="is_manager">False</field>
+        <field name="notes">Expert in facials and skin treatments</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_2')])]"/>
+    </record>
+
+    <!-- Update Salon Managers -->
+    <function model="beauty.salon" name="write">
+        <value eval="[ref('demo_salon_1')]"/>
+        <value eval="{'manager_id': ref('demo_staff_1')}"/>
+    </function>
+
+    <function model="beauty.salon" name="write">
+        <value eval="[ref('demo_salon_2')]"/>
+        <value eval="{'manager_id': ref('demo_staff_3')}"/>
+    </function>
+
+    <!-- Demo Services -->
+    <record id="demo_service_1" model="beauty.salon.service">
+        <field name="name">Women's Haircut</field>
+        <field name="description">Professional haircut and styling for women</field>
+        <field name="duration">60</field>
+        <field name="price">45.00</field>
+        <field name="category">hair</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_1'), ref('demo_salon_2'), ref('demo_salon_3')])]"/>
+    </record>
+
+    <record id="demo_service_2" model="beauty.salon.service">
+        <field name="name">Manicure & Gel Polish</field>
+        <field name="description">Full manicure with gel polish application</field>
+        <field name="duration">45</field>
+        <field name="price">35.00</field>
+        <field name="category">nails</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_1'), ref('demo_salon_3')])]"/>
+    </record>
+
+    <record id="demo_service_3" model="beauty.salon.service">
+        <field name="name">Facial Treatment</field>
+        <field name="description">Deep cleansing facial with mask</field>
+        <field name="duration">75</field>
+        <field name="price">65.00</field>
+        <field name="category">skin</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_2')])]"/>
+    </record>
+
+    <record id="demo_service_4" model="beauty.salon.service">
+        <field name="name">Full Body Massage</field>
+        <field name="description">60-minute full body relaxation massage</field>
+        <field name="duration">60</field>
+        <field name="price">80.00</field>
+        <field name="category">spa</field>
+        <field name="salon_ids" eval="[(6, 0, [ref('demo_salon_2')])]"/>
+    </record>
+
     <!-- Demo Clients -->
-    <record id="demo_client_1" model="beauty_salon.client">
+    <record id="demo_client_1" model="beauty.salon.client">
         <field name="name">Emma Johnson</field>
         <field name="phone">+1 (555) 123-4567</field>
         <field name="email">emma.johnson@example.com</field>
         <field name="address">123 Main Street, New York, NY 10001</field>
         <field name="gender">female</field>
         <field name="date_of_birth">1990-05-15</field>
+        <field name="membership_status">premium</field>
         <field name="notes">Regular customer, prefers hair coloring services</field>
+        <field name="salon_id" ref="demo_salon_1"/>
     </record>
 
-    <record id="demo_client_2" model="beauty_salon.client">
+    <record id="demo_client_2" model="beauty.salon.client">
         <field name="name">Michael Chen</field>
         <field name="phone">+1 (555) 987-6543</field>
         <field name="email">michael.chen@example.com</field>
         <field name="address">456 Oak Avenue, Los Angeles, CA 90001</field>
         <field name="gender">male</field>
         <field name="date_of_birth">1985-08-22</field>
-        <field name="notes">Prefers spa and massage services</field>
+        <field name="membership_status">regular</field>
+        <field name="notes">Prefers quick services, visits every 2 weeks</field>
+        <field name="salon_id" ref="demo_salon_2"/>
     </record>
 
-    <record id="demo_client_3" model="beauty_salon.client">
-        <field name="name">Sarah Williams</field>
+    <record id="demo_client_3" model="beauty.salon.client">
+        <field name="name">Sophia Rodriguez</field>
         <field name="phone">+1 (555) 456-7890</field>
-        <field name="email">sarah.williams@example.com</field>
-        <field name="address">789 Pine Road, Chicago, IL 60601</field>
+        <field name="email">sophia.rodriguez@example.com</field>
+        <field name="address">789 Pine Street, Chicago, IL 60601</field>
         <field name="gender">female</field>
-        <field name="date_of_birth">1995-03-10</field>
-        <field name="notes">New customer, interested in nail services</field>
-    </record>
-
-    <!-- Demo Services -->
-    <record id="demo_service_1" model="beauty_salon.service">
-        <field name="name">Haircut & Styling</field>
-        <field name="description">Professional haircut and styling for any hair type</field>
-        <field name="duration">60</field>
-        <field name="price">45.00</field>
-        <field name="category">hair</field>
-        <field name="sequence">10</field>
-    </record>
-
-    <record id="demo_service_2" model="beauty_salon.service">
-        <field name="name">Hair Coloring</field>
-        <field name="description">Full hair coloring service with premium products</field>
-        <field name="duration">120</field>
-        <field name="price">85.00</field>
-        <field name="category">hair</field>
-        <field name="sequence">20</field>
-    </record>
-
-    <record id="demo_service_3" model="beauty_salon.service">
-        <field name="name">Manicure</field>
-        <field name="description">Basic manicure with nail shaping and polish</field>
-        <field name="duration">45</field>
-        <field name="price">25.00</field>
-        <field name="category">nails</field>
-        <field name="sequence">30</field>
-    </record>
-
-    <record id="demo_service_4" model="beauty_salon.service">
-        <field name="name">Facial Treatment</field>
-        <field name="description">Deep cleansing facial with moisturizing mask</field>
-        <field name="duration">75</field>
-        <field name="price">65.00</field>
-        <field name="category">skin</field>
-        <field name="sequence">40</field>
-    </record>
-
-    <record id="demo_service_5" model="beauty_salon.service">
-        <field name="name">Swedish Massage</field>
-        <field name="description">60-minute full body Swedish massage</field>
-        <field name="duration">60</field>
-        <field name="price">75.00</field>
-        <field name="category">spa</field>
-        <field name="sequence">50</field>
-    </record>
-
-    <!-- Demo Staff -->
-    <record id="demo_staff_1" model="beauty_salon.staff">
-        <field name="name">Jessica Miller</field>
-        <field name="phone">+1 (555) 111-2222</field>
-        <field name="email">jessica.miller@salon.example.com</field>
-        <field name="specialization">hair_stylist</field>
-        <field name="job_title">Senior Hair Stylist</field>
-        <field name="hire_date">2020-01-15</field>
-        <field name="notes">Specializes in hair coloring and cutting techniques</field>
-    </record>
-
-    <record id="demo_staff_2" model="beauty_salon.staff">
-        <field name="name">David Wilson</field>
-        <field name="phone">+1 (555) 333-4444</field>
-        <field name="email">david.wilson@salon.example.com</field>
-        <field name="specialization">nail_tech</field>
-        <field name="job_title">Nail Technician</field>
-        <field name="hire_date">2021-03-10</field>
-        <field name="notes">Expert in nail art and gel manicures</field>
-    </record>
-
-    <record id="demo_staff_3" model="beauty_salon.staff">
-        <field name="name">Maria Garcia</field>
-        <field name="phone">+1 (555) 555-6666</field>
-        <field name="email">maria.garcia@salon.example.com</field>
-        <field name="specialization">esthetician</field>
-        <field name="job_title">Licensed Esthetician</field>
-        <field name="hire_date">2019-06-22</field>
-        <field name="notes">Specializes in facial treatments and skin care</field>
+        <field name="date_of_birth">1992-11-30</field>
+        <field name="membership_status">vip</field>
+        <field name="notes">VIP client, prefers Jessica Brown for all services</field>
+        <field name="salon_id" ref="demo_salon_3"/>
     </record>
 
     <!-- Demo Appointments -->
-    <record id="demo_appointment_1" model="beauty_salon.appointment">
+    <record id="demo_appointment_1" model="beauty.salon.appointment">
+        <field name="salon_id" ref="demo_salon_1"/>
         <field name="client_id" ref="demo_client_1"/>
-        <field name="service_id" ref="demo_service_2"/>
+        <field name="service_id" ref="demo_service_1"/>
         <field name="staff_id" ref="demo_staff_1"/>
-        <field name="appointment_date">2024-01-15 10:00:00</field>
-        <field name="duration">120</field>
-        <field name="state">completed</field>
-        <field name="notes">Client requested blonde highlights</field>
-    </record>
-
-    <record id="demo_appointment_2" model="beauty_salon.appointment">
-        <field name="client_id" ref="demo_client_2"/>
-        <field name="service_id" ref="demo_service_5"/>
-        <field name="staff_id" ref="demo_staff_3"/>
-        <field name="appointment_date">2024-01-16 14:30:00</field>
+        <field name="appointment_date">2024-01-15 14:00:00</field>
         <field name="duration">60</field>
-        <field name="state">confirmed</field>
-        <field name="notes">Client has back pain, focus on lower back</field>
+        <field name="state">completed</field>
+        <field name="notes">Client was very satisfied with the haircut</field>
     </record>
 
-    <record id="demo_appointment_3" model="beauty_salon.appointment">
-        <field name="client_id" ref="demo_client_3"/>
+    <record id="demo_appointment_2" model="beauty.salon.appointment">
+        <field name="salon_id" ref="demo_salon_2"/>
+        <field name="client_id" ref="demo_client_2"/>
         <field name="service_id" ref="demo_service_3"/>
+        <field name="staff_id" ref="demo_staff_3"/>
+        <field name="appointment_date">2024-01-20 11:00:00</field>
+        <field name="duration">75</field>
+        <field name="state">confirmed</field>
+        <field name="notes">First facial treatment for this client</field>
+    </record>
+
+    <record id="demo_appointment_3" model="beauty.salon.appointment">
+        <field name="salon_id" ref="demo_salon_3"/>
+        <field name="client_id" ref="demo_client_3"/>
+        <field name="service_id" ref="demo_service_2"/>
         <field name="staff_id" ref="demo_staff_2"/>
-        <field name="appointment_date">2024-01-17 11:00:00</field>
+        <field name="appointment_date">2024-01-25 16:30:00</field>
         <field name="duration">45</field>
         <field name="state">draft</field>
-        <field name="notes">First-time customer, wants French manicure</field>
+        <field name="notes">Regular manicure appointment</field>
     </record>
+
 </odoo>

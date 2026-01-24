@@ -11,6 +11,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/beauty_salon_menus.xml',
+        'views/beauty_salon_views.xml',
         'views/beauty_salon_client_views.xml',
         'views/beauty_salon_service_views.xml',
         'views/beauty_salon_staff_views.xml',
