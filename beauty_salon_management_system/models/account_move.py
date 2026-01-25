@@ -23,6 +23,11 @@ class AccountMove(models.Model):
         help="Additional notes about the appointment",
         copy=False,
     )
+    appointment_extra_info = fields.Text(
+        string='Extra Info about Appointment',
+        help="Extra information about the appointment",
+        copy=False,
+    )
     price_agreed = fields.Monetary(
         string='Price Agreed',
         currency_field='currency_id',
