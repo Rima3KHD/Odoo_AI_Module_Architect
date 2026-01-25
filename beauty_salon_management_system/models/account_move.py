@@ -11,3 +11,10 @@ class AccountMove(models.Model):
         ondelete='set null',
         copy=False,
     )
+    appointment_date = fields.Datetime(
+        string='Appointment Date',
+        related='appointment_id.appointment_date',
+        store=True,
+        readonly=False,
+        help="Date and time of the related appointment",
+    )
