@@ -12,9 +12,20 @@ class AccountMove(models.Model):
         copy=False,
     )
     appointment_date = fields.Datetime(
-        string='Appointment Date',
+        string='Appointment Date2',
         related='appointment_id.appointment_date',
         store=True,
         readonly=False,
         help="Date and time of the related appointment",
+    )
+    appointment_note = fields.Text(
+        string='Appointment Note',
+        help="Additional notes about the appointment",
+        copy=False,
+    )
+    price_agreed = fields.Monetary(
+        string='Price Agreed',
+        currency_field='currency_id',
+        help="Price agreed upon in the appointment",
+        copy=False,
     )
