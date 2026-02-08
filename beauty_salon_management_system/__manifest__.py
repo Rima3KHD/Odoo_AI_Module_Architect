@@ -18,7 +18,9 @@
         'views/beauty_salon_appointment_views.xml',
         'views/account_move_views.xml',
     ],
-    'demo': [],
+    'demo': [
+        'data/demo_data.xml',
+    ],
     'assets': {},
     'installable': True,
     'application': True,

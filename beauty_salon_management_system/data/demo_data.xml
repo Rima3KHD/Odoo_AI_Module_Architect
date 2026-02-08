@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Demo data for Beauty Salon Management System -->
+    
+    <!-- Demo Employees -->
+    <record id="demo_employee_1" model="hr.employee">
+        <field name="name">Sarah Johnson</field>
+        <field name="job_title">Senior Stylist</field>
+        <field name="work_email">sarah@beautysalon.com</field>
+        <field name="work_phone">+1-555-0101</field>
+    </record>
+    
+    <record id="demo_employee_2" model="hr.employee">
+        <field name="name">Michael Chen</field>
+        <field name="job_title">Nail Technician</field>
+        <field name="work_email">michael@beautysalon.com</field>
+        <field name="work_phone">+1-555-0102</field>
+    </record>
+    
+    <record id="demo_employee_3" model="hr.employee">
+        <field name="name">Emma Rodriguez</field>
+        <field name="job_title">Esthetician</field>
+        <field name="work_email">emma@beautysalon.com</field>
+        <field name="work_phone">+1-555-0103</field>
+    </record>
+    
+    <!-- Demo Services -->
+    <record id="demo_service_haircut" model="beauty.salon.service">
+        <field name="name">Women's Haircut</field>
+        <field name="description">Professional haircut with styling</field>
+        <field name="duration">1.0</field>
+        <field name="price">65.00</field>
+        <field name="category">hair</field>
+    </record>
+    
+    <record id="demo_service_manicure" model="beauty.salon.service">
+        <field name="name">Classic Manicure</field>
+        <field name="description">Basic manicure with polish</field>
+        <field name="duration">0.75</field>
+        <field name="price">35.00</field>
+        <field name="category">nails</field>
+    </record>
+    
+    <record id="demo_service_facial" model="beauty.salon.service">
+        <field name="name">Basic Facial</field>
+        <field name="description">Cleansing, exfoliation, and moisturizing facial</field>
+        <field name="duration">1.5</field>
+        <field name="price">85.00</field>
+        <field name="category">skin</field>
+    </record>
+    
+    <record id="demo_service_coloring" model="beauty.salon.service">
+        <field name="name">Hair Coloring</field>
+        <field name="description">Full hair color treatment</field>
+        <field name="duration">2.5</field>
+        <field name="price">120.00</field>
+        <field name="category">hair</field>
+    </record>
+    
+    <!-- Demo Customers -->
+    <record id="demo_customer_1" model="res.partner">
+        <field name="name">Jennifer Smith</field>
+        <field name="email">jennifer.smith@email.com</field>
+        <field name="phone">+1-555-0201</field>
+        <field name="customer_rank">1</field>
+    </record>
+    
+    <record id="demo_customer_2" model="res.partner">
+        <field name="name">Robert Williams</field>
+        <field name="email">robert.w@email.com</field>
+        <field name="phone">+1-555-0202</field>
+        <field name="customer_rank">1</field>
+    </record>
+    
+    <record id="demo_customer_3" model="res.partner">
+        <field name="name">Lisa Thompson</field>
+        <field name="email">lisa.t@email.com</field>
+        <field name="phone">+1-555-0203</field>
+        <field name="customer_rank">1</field>
+    </record>
+    
+    <!-- Demo Appointments -->
+    <record id="demo_appointment_1" model="beauty.salon.appointment">
+        <field name="customer_id" ref="demo_customer_1"/>
+        <field name="service_id" ref="demo_service_haircut"/>
+        <field name="employee_id" ref="demo_employee_1"/>
+        <field name="appointment_date">2024-01-15 10:00:00</field>
+        <field name="duration">1.0</field>
+        <field name="state">done</field>
+        <field name="notes">Regular customer, prefers side part</field>
+    </record>
+    
+    <record id="demo_appointment_2" model="beauty.salon.appointment">
+        <field name="customer_id" ref="demo_customer_2"/>
+        <field name="service_id" ref="demo_service_manicure"/>
+        <field name="employee_id" ref="demo_employee_2"/>
+        <field name="appointment_date">2024-01-16 14:30:00</field>
+        <field name="duration">0.75</field>
+        <field name="state">confirmed</field>
+        <field name="notes">First time customer</field>
+    </record>
+    
+    <record id="demo_appointment_3" model="beauty.salon.appointment">
+        <field name="customer_id" ref="demo_customer_3"/>
+        <field name="service_id" ref="demo_service_facial"/>
+        <field name="employee_id" ref="demo_employee_3"/>
+        <field name="appointment_date">2024-01-17 11:00:00</field>
+        <field name="duration">1.5</field>
+        <field name="state">scheduled</field>
+        <field name="notes">Sensitive skin - use gentle products</field>
+    </record>
+    
+    <!-- Demo Products/Inventory -->
+    <record id="demo_product_shampoo" model="product.product">
+        <field name="name">Professional Shampoo</field>
+        <field name="default_code">SHMP-001</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="product.product_category_all"/>
+        <field name="list_price">25.00</field>
+        <field name="standard_price">15.00</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+    
+    <record id="demo_product_nail_polish" model="product.product">
+        <field name="name">Premium Nail Polish</field>
+        <field name="default_code">NPL-001</field>
+        <field name="type">product</field>
+        <field name="categ_id" ref="product.product_category_all"/>
+        <field name="list_price">12.00</field>
+        <field name="standard_price">6.00</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+    </record>
+    
+</odoo>
